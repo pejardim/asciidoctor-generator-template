@@ -1,0 +1,29 @@
+// Copyright 2020 SE Chinstrap
+[[chapter]]
+:numbered:
+== Introduction
+
+=== Hello World
+
+Here's how you say "`Hello, World!`" in `C`:
+
+. Create a basic code:
++
+[source,c]
+----
+#include <stdio.h>
+
+int main(void)
+{
+    printf("Hello World!\n");
+    return 0;
+}
+----
+
+<<<
+
+== How-to
+
+.Captured Flash Card
+image::chapters/media/linux.png[alt=.Captured Flash Card, pdfwidth=80%, title-align=center, align=center]
+
