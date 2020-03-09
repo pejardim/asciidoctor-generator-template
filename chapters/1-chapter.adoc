@@ -1,29 +1,39 @@
 // Copyright 2020 SE Chinstrap
 [[chapter]]
 :numbered:
-== Introduction
+== Overview
 
-=== Hello World
+This document discusses on how to download, configure and add functionalities to a local server using a fixed ip address. The need of a local server could reach a various range of activities and utilities, since in modern days alost every action based with computer usage requires some type of server connection such as the use of internet.
 
-Here's how you say "`Hello, World!`" in `C`:
+For the examples shown bellow, the used machine is a Dell PowerEdge R610 using GNU/Linux with Ubuntu Server 18.04.4 distribution.
 
-. Create a basic code:
-+
-[source,c]
+== Ubuntu Download
+In order to obtain the Ubuntu Server _.iso_ file, follow the steps bellow:
+
+- Obtain the .iso file
 ----
-#include <stdio.h>
+    Acess the https://discuss.asciidoctor.org/[*mailing list*^,role=green]
+----
+- Port the .iso file 
 
-int main(void)
-{
-    printf("Hello World!\n");
-    return 0;
-}
+----
+    After obtaining the .iso file, mount the file into a CD or a pen drive in order to boot in the machine.
 ----
 
-<<<
+== Configuring Hard Drives
 
-== How-to
 
-.Captured Flash Card
-image::chapters/media/linux.png[alt=.Captured Flash Card, pdfwidth=80%, title-align=center, align=center]
+== Installing Ubuntu Server
 
+== Post Installation - Upgrading Software
+When connected to the internet, update and upgrade the packages installed in the server using the commands:
+[source, console]
+$ sudo apt-get update
+
+[source, console]
+$ sudo apt-get upgrade
+
+[NOTE%autofit]
+====
+In case the internet configuration is not enabling the update, try to update the clock time correctly.
+====
