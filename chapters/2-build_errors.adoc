@@ -1,0 +1,6 @@
+// Copyright 2020 NXP Semiconductors
+[[chapter]]
+:numbered:
+== Most common build errors
+
+=== Setting up your computer
