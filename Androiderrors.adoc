@@ -1,0 +1,14 @@
+= Android build error workarounds
+:title-logo-image: image::themes/media/NXP.png[pdfwidth=40%, align=right]
+© 2020 NXP Semiconductors, Inc. All rights reserved.
+REV 1.0, November 05, 2020
+:doctype: book
+:reproducible:
+:toc2:
+:toclevels: 5
+:source-highlighter: coderay
+:numbered:
+:icons: font
+:autofit-option:
+include::chapters/1-introduction.adoc[]
+include::chapters/2-build_errors.adoc[]

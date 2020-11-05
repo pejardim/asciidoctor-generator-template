@@ -1,0 +1,15 @@
+// Copyright 2020 NXP Semiconductors
+[[chapter]]
+:numbered:
+== Introduction
+
+This document aims to discuss some possible errors found while building a android system and it's intrinsic elements.
+
+[IMPORTANT%autofit]
+====
+The described procedures in this document target a _GNU/Linux_ (`Ubuntu 20.04 LTS`).
+====
+=== Development Board
+
+For the specific actions discussed bellow, the aimed target is a i.MX 8 QuadMax MEK board, but the build process is 
+similar for other boards of the i.MX family.

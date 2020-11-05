@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-__author__ = "Diego Dorta"
-__copyright__ = "Copyright 2020 SE Chinstrap"
+__author__ = "Pedro Jardim"
+__copyright__ = "Copyright 2020 NXP Semicondutors"
 __license__ = "BSD-3-Clause"
 import os, sys
 import argparse
@@ -22,8 +22,8 @@ class SEChinstrapTemplateGenerator(object):
     def writeAdocFile(self):        
         doc = open(self.documentNameAdoc, "w")        
         doc.write("= " + self.documentTitle + "\n")        
-        doc.write(":title-logo-image: image::themes/media/se-chinstrap.png[pdfwidth=40%, align=right]\n")
-        doc.write("© 2020 SE Chinstrap\n")
+        doc.write(":title-logo-image: image::themes/media/NXP.png[pdfwidth=40%, align=right]\n")
+        doc.write("© 2020 NXP Semiconductors\n")
         doc.write("REV 1.0, " + self.date + "\n")
         doc.write(":doctype: book\n")
         doc.write(":reproducible:\n")
