@@ -3,4 +3,150 @@
 :numbered:
 == Most common build errors
 
-=== Setting up your computer
+=== Setting Up Your Computer
+
+While setting up your computer variables and installing dependencies, some of the prerequisites are in the chapter 2.1 of the Android user guide documentation, however, some needed packages for Ubuntu 18.04 and beyond were not put.
+
+The needed packages were better described at the https://source.android.com/setup/build/initializing[initializing section of the Android open source documentation.]
+The necessary command applied was:
+
+[source, console]
+$ sudo apt-get install git-core gnupg flex bison build-essential zip curl zlib1g-dev gcc-multilib g++-multilib libc6-dev-i386 lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z1-dev libgl1-mesa-dev libxml2-utils xsltproc unzip fontconfig
+
+=== Deprecated Cross Compile Tool
+
+When executing the build on android using make, a error message could appear showing that the GCC has been deprecated, such as shown bellow:
+
+[source, console]
+Android GCC has been deprecated in favor of Clang, and will be removed from
+ Android in 2020-01 as per the deprecation plan in:
+ https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+/
+master/GCC_4_9_DEPRECATION.md
+
+In this case, the issue fix was to download the gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz file tool at the https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-a/downloads[arm Developer GNU-A Download page], export the files to the */opt* directory and then run the following commands:
+[source, console]
+$ export AARCH64_GCC_CROSS_COMPILE=/opt/gcc-arm-8.3-2019.03-x86_64-aarch64-linuxgnu/bin/aarch64-linux-gnu
+
+and
+
+[source, console]
+$ export AARCH32_GCC_CROSS_COMPILE=/opt/gcc-arm-8.3-2019.03-x86_64-arm-eabi/bin/arm-eabi
+
+For more information on this specific process search for chapter 3.2 Building Android Images on the Android User Guide.
+
+=== RAM memory issue
+For newer versions of Android, Google requires at least 16GB of RAM/swap memory available, if not available, errors such as shown bellow should appear:
+
+[source, console]
+ninja: no work to do.
+13:43:44 soong bootstrap failed with: exit status 1
+[100% 1/1] out/soong/.bootstrap/bin/soong_build out/soong/build.ninja
+FAILED: out/soong/build.ninja
+out/soong/.bootstrap/bin/soong_build -t -l out/.module_paths/Android.bp.list -b out/soong -n out -d out/soong/build.ninja.d -globFile out/soong/.bootstrap/build-globs.ninja -o out/soong/build.ninja Android.bp
+Killed
+ninja: build stopped: subcommand failed.
+ #### failed to build some targets (32:46 (mm:ss)) ####
+
+In this case, the proper way to resolve this type of issue is to add more RAM memory to your machine.
+
+=== Libncurses Error Message at Build
+
+While executing a make command, a possible error might appear showing a message aboud a error on the dependency called Libncurses. The found solution for this was to execute the following commands:
+
+To check if libncurses is already installed:
+[source, console]
+$ ls -l /usr/lib64/libncurses*
+
+should output something similar to:
+[source, console]
+lrwxrwxrwx. 1 root root   17 Jan 16 2019 /usr/lib64/libncurses.so.6 -> libncurses.so.6.1
+-rwxr-xr-x. 1 root root 216912 Jan 16 2019 /usr/lib64/libncurses.so.6.1
+lrwxrwxrwx. 1 root root   18 Jan 16 2019 /usr/lib64/libncursesw.so.6 -> libncursesw.so.6.1
+-rwxr-xr-x. 1 root root 300104 Jan 16 2019 /usr/lib64/libncursesw.so.6.1
+
+if not, install libncurses:
+
+[source, console]
+$ sudo apt-get install libncurses5-dev libncursesw5-dev
+
+=== Python Version at Build
+
+Another error that could appear while building the android files is one related to some commands on the partitio-table files related to the my_cmp command, as shown bellow:
+
+[source, console]
+FAILED: out/target/product/mek_8q/partition-table-default.img
+/bin/bash -c "(out/host/linux-x86/bin/bpttool make_table --output_gpt out/target/product/mek_8q/partition-table-default.img --output_json out/target/product/mek_8q/partition-table-default.bpt  --input device/fsl/common/partition/device-partitions-13GB-ab_super.bpt ) && (for addition_partition in partition-table-28GB:device/fsl/common/partition/device-partitions-28GB-ab_super.bpt; do PARTITION_OUT_IMAGE=\`echo \$addition_partition | cut -d\":\" -f1\`; PARTITION_INPUT_BPT=\`echo \$addition_partition | cut -d\":\" -f2\`; out/host/linux-x86/bin/bpttool make_table --output_gpt out/target/product/mek_8q/\$PARTITION_OUT_IMAGE.img --output_json out/target/product/mek_8q/\$PARTITION_OUT_IMAGE.bpt --input \$PARTITION_INPUT_BPT ; done )"
+Traceback (most recent call last):
+  File "out/host/linux-x86/bin/bpttool", line 1134, in <module>
+    tool.run(sys.argv)
+  File "out/host/linux-x86/bin/bpttool", line 1062, in run
+    args.func(args)
+  File "out/host/linux-x86/bin/bpttool", line 1095, in make_table
+    (json_str, gpt_bin) = self.bpt.make_table(args.input, args.ab_suffixes,
+  File "out/host/linux-x86/bin/bpttool", line 794, in make_table
+    partitions = sorted(partitions, my_cmp=lambda x, y: x.cmp(y))
+TypeError: 'my_cmp' is an invalid keyword argument for sort()
+12:17:17 ninja failed with: exit status 1
+#### failed to build some targets (7 seconds) ####
+
+For this specific issue, if the default version used of python is python 3.x, the command cmp() is deprecated, only working on python 2.x versions, so, in order to fix it, some steps are required:
+
+Check if the default version used of python is 3.x or 2.x:
+[source, console]
+$ python --version
+Python 3.8.5
+
+In this case, it's possible to see that the default used version of python is 3.8.5, then, check if there's a python2 version installed on the computer using:
+
+[source, console]
+$ python2 --version
+Python 2.7.18
+
+It's possible to see that python 2.7 version is already installed. If not, the command to install python2 should be:
+
+[source, console]
+$ sudo apt install python2
+
+After properly installed, to change the default version of python use the commands:
+[source, console]
+$ sudo update-alternatives --install /usr/bin/python python /usr/bin/python2 1
+$ sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 2
+$ sudo update-alternatives --config python
+
+The output of the last command given should be something similar to the one bellow:
+[source, console]
+There are 2 choices for the alternative python (providing /usr/bin/python).
+  Selection    Path              Priority   Status
+------------------------------------------------------------
+  0            /usr/bin/python3   2         auto mode
+* 1            /usr/bin/python2   1         manual mode
+  2            /usr/bin/python3   2         manual mode
+
+Then, just select the specific python version that is desired to normally build 
+
+=== Board Launching Errors
+After finishing building the Android version, it's necessary to also pass its files to the required board and then finally be able to use it as desired. Although https://www.nxp.com/docs/en/quick-reference-guide/ANDROID_QUICK_START_GUIDE.pdf[Android quick start guide] approaches on how to properly launch to the board, some of its methods don't properly work.
+
+For SD card usage, there's a provided by the build script called `fsl-sdcard-partition.sh`  that should partition the SD card and pass the necessary files to its specific memory space, but in this newer versions, the script presents some failures for the 9th part of the partition card. For specific SD card usage, a manual partitioning should be done using the table provided at the 5.1.1 chapter of the Android user guide.
+
+For eMMC launches, the script provided works normally, but some issues were found related to the use of the uuu tool.
+In this specific case, the `uuu_imx_android_flash.sh` script works with commands such as:
+[source, console]
+$ ./uuu_imx_android_flash.sh -f imx8qm -a -e -trusty
+
+One issue found at the launch from eMMC was the following message:
+
+[source, console]
+partition-table.img
+./uuu_imx_android_flash.sh: line 527: ${image_directory}${partition_file}: bad substitution
+
+and also:
+[source, console]
+success 0   Failure1                                                        
+1:3     11/21 [partition does not exist  ] FB[-t 600000]: flash dtb
+
+To avoid this specific issues, the files `u-boot, uuu, vbmeta, partition, boot, dtbo and super` should be deleted from the /tmp folder, and then run the script again, so that the new files created won't be corrupted.
+To properly delete the files run the following commands:
+[source, console]
+$ cd /tmp
+$ rm u-boot* uuu* vbmeta* partition* boot* dtbo* super*

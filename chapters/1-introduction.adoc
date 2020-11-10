@@ -5,11 +5,15 @@
 
 This document aims to discuss some possible errors found while building a android system and it's intrinsic elements.
 
+For this document development, a Android 10.0.0_2.5.0 build version was performed. Therefore, others versions may differ from the current fixes applied.
+
+Also, for more information on how to build a Android platform on i.MX devices, please check the https://www.nxp.com/docs/en/user-guide/ANDROID_USERS_GUIDE.pdf[Android User Guide]. 
+
 [IMPORTANT%autofit]
 ====
 The described procedures in this document target a _GNU/Linux_ (`Ubuntu 20.04 LTS`).
 ====
 === Development Board
 
-For the specific actions discussed bellow, the aimed target is a i.MX 8 QuadMax MEK board, but the build process is 
+For the specific actions discussed below, the aimed target is a i.MX 8 QuadMax MEK board, but the build process is 
 similar for other boards of the i.MX family.
